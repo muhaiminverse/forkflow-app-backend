@@ -1,6 +1,10 @@
 import { type Request, type Response } from "express";
 import User = require("../models/user");
 
+
+// ----------------
+// GET USER  
+// ----------------
 const getCurrentUser = async (req: Request, res: Response) => {
   try {
     const currentUser = await User.findOne({ _id: req.userId });
@@ -15,6 +19,9 @@ const getCurrentUser = async (req: Request, res: Response) => {
   }
 };
 
+// ----------------
+// UPDATE USER  
+// ----------------
 const updateCurrentUser = async (req: Request, res: Response) => {
   try {
     const { name, addressLine1, country, city } = req.body;
@@ -38,6 +45,9 @@ const updateCurrentUser = async (req: Request, res: Response) => {
   }
 };
 
+// ----------------
+// CREATE USER  
+// ----------------
 const createCurrentUser = async (req: Request, res: Response) => {
   try {
     const { auth0Id } = req.body;

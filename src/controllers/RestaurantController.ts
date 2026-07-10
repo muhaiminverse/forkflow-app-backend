@@ -1,6 +1,10 @@
 import { Request, Response } from "express";
 import Restaurant from "../models/restaurant";
 
+
+// ----------------
+// GET RESTAURANT  
+// ----------------
 const getRestaurant = async (req: Request, res: Response) => {
   try {
     const restaurantId = req.params.restaurantId;
@@ -17,6 +21,9 @@ const getRestaurant = async (req: Request, res: Response) => {
   }
 };
 
+// ----------------
+// SEARCH RESTAURANT  
+// ----------------
 const searchRestaurant = async (req: Request, res: Response) => {
   try {
     const city = req.params.city;
