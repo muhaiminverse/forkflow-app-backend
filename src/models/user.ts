@@ -1,8 +1,7 @@
-import { ObjectId } from "mongodb";
-import mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-  _id: ObjectId,
+  // ⚡ The '_id' field was removed from here so Mongoose auto-generates it!
   auth0Id: {
     type: String,
     required: true,
@@ -26,4 +25,4 @@ const userSchema = new mongoose.Schema({
 });
 
 const User = mongoose.model("User", userSchema);
-export = User;
+export default User;
