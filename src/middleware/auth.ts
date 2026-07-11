@@ -1,7 +1,7 @@
 import { type Request, type Response, type NextFunction } from "express";
-import jwt from "jsonwebtoken";
-import User from "../models/user";
-import expressAuth from "express-oauth2-jwt-bearer";
+import jwt = require("jsonwebtoken");
+import User = require("../models/user");
+import expressAuth = require("express-oauth2-jwt-bearer");
 const auth = expressAuth.auth;
 
 declare global {
@@ -9,7 +9,6 @@ declare global {
     interface Request {
       auth0Id?: string;
       userId?: string;
-      email?: string;
     }
   }
 }
@@ -22,6 +21,7 @@ const jwtCheck = auth({
 
 
 
+
 const jwtParse = async (req: Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers;
 
@@ -29,31 +29,23 @@ const jwtParse = async (req: Request, res: Response, next: NextFunction) => {
     return res.sendStatus(401);
   }
 
+  // Bearer lshdflshdjkhvjkshdjkvh34h5k3h54jkh
   const token = authorization.split(" ")[1];
 
   try {
     const decoded = jwt.decode(token) as jwt.JwtPayload;
     const auth0Id = decoded.sub;
 
-    if (!auth0Id) {
+    const user = await User.findOne({ auth0Id });
+
+    if (!user) {
       return res.sendStatus(401);
     }
 
-    const email = typeof decoded.email === "string" ? decoded.email : undefined;
-    const user = await User.findOne({ auth0Id });
-
     req.auth0Id = auth0Id as string;
-    if (email) {
-      req.email = email;
-    }
-
-    if (user) {
-      req.userId = String(user._id);
-    }
-
+    req.userId = String(user._id);
     next();
   } catch (error) {
-    console.error("JWT parse failed", error);
     return res.sendStatus(401);
   }
 };
